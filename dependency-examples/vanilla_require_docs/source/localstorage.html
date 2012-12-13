@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">define([&quot;underscore&quot;,&quot;backbone&quot;],function(_,Backbone){function S4(){return((1+Math.random())*65536|0).toString(16).substring(1)}function guid(){return S4()+S4()+&quot;-&quot;+S4()+&quot;-&quot;+S4()+&quot;-&quot;+S4()+&quot;-&quot;+S4()+S4()+S4()}var Store=function(name){this.name=name;var store=localStorage.getItem(this.name);this.data=store&amp;&amp;JSON.parse(store)||{}};_.extend(Store.prototype,{save:function(){localStorage.setItem(this.name,JSON.stringify(this.data))},create:function(model){if(!model.id)model.id=model.attributes.id=guid();
+this.data[model.id]=model;this.save();return model},update:function(model){this.data[model.id]=model;this.save();return model},find:function(model){return this.data[model.id]},findAll:function(){return _.values(this.data)},destroy:function(model){delete this.data[model.id];this.save();return model}});Backbone.sync=function(method,model,options){var resp;var store=model.localStorage||model.collection.localStorage;switch(method){case &quot;read&quot;:resp=model.id?store.find(model):store.findAll();break;case &quot;create&quot;:resp=
+store.create(model);break;case &quot;update&quot;:resp=store.update(model);break;case &quot;delete&quot;:resp=store.destroy(model);break}if(resp)options.success(resp);else options.error(&quot;Record not found&quot;)};return Store});
+</pre>
+</body>
+</html>
